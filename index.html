@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>oreui</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="../dist/preload.css">
+<link rel="stylesheet" href="../dist/libs/main.css">
+<link rel="stylesheet" href="../dist/libs/buttons.css">
+<link rel="stylesheet" href="../dist/libs/input.css">
+<link rel="stylesheet" href="../dist/libs/icons.css">
+<link rel="stylesheet" href="../dist/libs/fonts.css">
+<script type="module" src="../dist/lite.init.js"></script>
+
+<style>
+html, body {
+  overflow:auto !important;
+}
+main {
+  max-width:800px;
+  margin:auto;
+  padding:20px;
+}
+.center {
+  text-align:center;
+}
+.link {
+  word-break:break-all;
+  font-size:14px;
+  opacity:.9;
+}
+.grid {
+  display:grid;
+  gap:14px;
+}
+.buttons {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+</style>
+</head>
+
+<body>
+
+<loader><i class="-icon -loading"></i></loader>
+
+<header>
+  <h1 class="title">oreui</h1>
+</header>
+
+<main class="grid">
+
+<div class="banner box center">
+  <h2>Ore UI Core</h2>
+  <p>CDN distribution for Ore UI web assets</p>
+</div>
+
+<div class="box">
+  <info>CDN</info>
+  <div class="link">
+    https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/
+  </div>
+</div>
+
+<div class="box">
+  <info>Usage</info>
+<pre class="link">
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/dist/preload.css"&gt;
+&lt;script type="module" src="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/dist/lite.init.js"&gt;&lt;/script&gt;
+</pre>
+</div>
+
+<div class="box center">
+  <info>Directories</info>
+  <div class="buttons">
+    <a class="normal link" href="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/dist/">dist</a>
+    <a class="normal link" href="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/assets/">assets</a>
+  </div>
+</div>
+
+<div class="box">
+  <info>Notes</info>
+  <p class="link">
+    Use jsDelivr CDN paths.<br>
+    Use lite.init.js.<br>
+    Do not rely on Ore UI JavaScript.
+  </p>
+</div>
+
+</main>
+
+<script>
+window.onload=()=>document.querySelector("loader").style.display="none"
+</script>
+
+</body>
+</html>
