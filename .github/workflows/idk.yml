@@ -1,0 +1,67 @@
+name: Flatten dist (collision safe)
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Clean repo (keep zip + workflow)
+        run: |
+          shopt -s extglob
+          rm -rf !(ore-ui-core.zip|.github)
+
+      - name: Unzip package
+        run: |
+          unzip -o ore-ui-core.zip -d extracted
+
+      - name: Flatten dist (collision safe)
+        run: |
+          find extracted -type f -path "*/dist/*" -print0 | while IFS= read -r -d '' file; do
+            rel=$(echo "$file" | sed 's|.*dist/||')
+            safe=$(echo "$rel" | tr '/' '_')
+            cp "$file" "./$safe"
+          done
+
+      - name: Create README.md
+        run: |
+          cat << 'EOF' > README.md
+# oreui
+
+Flattened CDN distribution of Ore UI assets.
+
+All files from dist/ are placed in the root (collision-safe renamed).
+
+Base CDN:
+https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/
+
+Example usage:
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/preload.css">
+<script type="module" src="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/lite.init.js"></script>
+
+Rules:
+- Do NOT use ./dist paths
+- Use CDN only
+- Use lite.init.js
+- Hide loader manually
+
+EOF
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          git add .
+          git commit -m "Flatten dist (collision safe)" || echo "No changes"
+          git push
