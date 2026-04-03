@@ -2,7 +2,8 @@ name: Flatten dist (collision safe)
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -15,49 +16,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Clean repo (keep zip + workflow)
+      - name: Clean repo
         run: |
           shopt -s extglob
           rm -rf !(ore-ui-core.zip|.github)
 
-      - name: Unzip package
-        run: |
-          unzip -o ore-ui-core.zip -d extracted
+      - name: Unzip
+        run: unzip -o ore-ui-core.zip -d extracted
 
-      - name: Flatten dist (collision safe)
+      - name: Flatten dist safely
         run: |
-          find extracted -type f -path "*/dist/*" -print0 | while IFS= read -r -d '' file; do
-            rel=$(echo "$file" | sed 's|.*dist/||')
+          find extracted -type f -path "*/dist/*" | while read file; do
+            rel="${file#*dist/}"
             safe=$(echo "$rel" | tr '/' '_')
-            cp "$file" "./$safe"
+            cp "$file" "$safe"
           done
 
-      - name: Create README.md
+      - name: Create README
         run: |
-          cat << 'EOF' > README.md
-# oreui
+          echo "# oreui" > README.md
+          echo "" >> README.md
+          echo "Flattened CDN distribution of Ore UI assets." >> README.md
+          echo "" >> README.md
+          echo "Base CDN:" >> README.md
+          echo "https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/" >> README.md
 
-Flattened CDN distribution of Ore UI assets.
-
-All files from dist/ are placed in the root (collision-safe renamed).
-
-Base CDN:
-https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/
-
-Example usage:
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/preload.css">
-<script type="module" src="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/lite.init.js"></script>
-
-Rules:
-- Do NOT use ./dist paths
-- Use CDN only
-- Use lite.init.js
-- Hide loader manually
-
-EOF
-
-      - name: Commit & push
+      - name: Commit
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
