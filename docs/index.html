@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Ore UI CDN</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="../dist/preload.css">
+<link rel="stylesheet" href="../dist/libs/main.css">
+<link rel="stylesheet" href="../dist/libs/buttons.css">
+<link rel="stylesheet" href="../dist/libs/input.css">
+<link rel="stylesheet" href="../dist/libs/icons.css">
+<link rel="stylesheet" href="../dist/libs/fonts.css">
+<script type="module" src="../dist/lite.init.js"></script>
+
+<style>
+html, body {
+  overflow:auto !important;
+  height:auto !important;
+}
+main {
+  max-width:900px;
+  margin:auto;
+  padding:16px;
+}
+.grid {
+  display:grid;
+  gap:12px;
+}
+.link {
+  word-break:break-all;
+}
+</style>
+</head>
+
+<body>
+
+<loader><i class="-icon -loading"></i></loader>
+
+<header>
+  <h1 class="title">Ore UI CDN</h1>
+</header>
+
+<main class="grid">
+
+<div class="banner box center">
+  <h2>Ore UI Core</h2>
+  <p>CDN + directory explorer + AI usage guide</p>
+</div>
+
+<div class="box">
+  <h3>Base CDN</h3>
+  <div class="link">
+    https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/
+  </div>
+</div>
+
+<div class="box">
+  <h3>Quick usage</h3>
+
+<pre class="link">
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/dist/preload.css"&gt;
+&lt;script type="module" src="https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/dist/lite.init.js"&gt;&lt;/script&gt;
+</pre>
+
+</div>
+
+<div class="box">
+  <h3>Directories</h3>
+
+  <button class="normal link" onclick="openDir('dist')">dist/</button>
+  <button class="normal link" onclick="openDir('assets')">assets/</button>
+
+</div>
+
+<div class="box">
+  <h3>Files</h3>
+  <div id="files"></div>
+</div>
+
+<div class="box">
+  <h3>AI Instructions</h3>
+  <p>
+  Always use jsDelivr CDN.<br>
+  Never use local ./dist paths.<br>
+  Use lite.init.js only.<br>
+  Hide loader manually.
+  </p>
+</div>
+
+</main>
+
+<script>
+window.onload=()=>document.querySelector("loader").style.display="none"
+
+const base = "https://cdn.jsdelivr.net/gh/hamalainenmiska100-hue/oreui@main/"
+
+function openDir(dir){
+  let files = []
+
+  if(dir==="dist"){
+    files = [
+      "dist/preload.css",
+      "dist/libs/main.css",
+      "dist/libs/buttons.css",
+      "dist/libs/input.css",
+      "dist/libs/icons.css",
+      "dist/libs/fonts.css",
+      "dist/lite.init.js"
+    ]
+  }
+
+  if(dir==="assets"){
+    files = [
+      "assets/icons/appicon.png",
+      "assets/icons/favicon.ico"
+    ]
+  }
+
+  let html=""
+  files.forEach(f=>{
+    html+=`<div class="box link">${base}${f}</div>`
+  })
+
+  document.getElementById("files").innerHTML=html
+}
+</script>
+
+</body>
+</html>
