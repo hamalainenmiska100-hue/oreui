@@ -1,0 +1,30 @@
+name: Unpack and Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Unzip package
+        run: |
+          rm -rf dist assets
+          unzip ore-ui-core.zip
+
+      - name: Commit extracted files
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          git add dist assets AGENTS.md || true
+          git commit -m "Deploy extracted files" || echo "No changes"
+          git push
